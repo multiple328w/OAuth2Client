@@ -18,9 +18,10 @@
 
 + (NSString *)nxoauth2_stringWithUUID;
 {
-    CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
-    NSString *result = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID);
-    CFRelease(theUUID);
+    // CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+    // NSString *result = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID);
+    // CFRelease(theUUID);
+    NSString* result = [[UIDevice currentDevice].identifierForVendor UUIDString];
     return result;
 }
 
@@ -29,7 +30,7 @@
 
 + (NSString *)nxoauth2_stringWithEncodedQueryParameters:(NSDictionary *)parameters;
 {
-    
+
     NSMutableArray *parameterPairs = [NSMutableArray array];
     for (NSString *key in [parameters allKeys]) {
         NSString *pair = [NSString stringWithFormat:@"%@=%@", [key nxoauth2_URLEncodedString], [[parameters objectForKey:key] nxoauth2_URLEncodedString]];
@@ -42,7 +43,7 @@
 {
     NSArray *encodedParameterPairs = [self componentsSeparatedByString:@"&"];
     NSMutableDictionary *requestParameters = [NSMutableDictionary dictionary];
-    
+
     for (NSString *encodedPair in encodedParameterPairs) {
         NSArray *encodedPairElements = [encodedPair componentsSeparatedByString:@"="];
         if (encodedPairElements.count == 2) {
